@@ -1,7 +1,7 @@
-export default function TopNav({ steps, activeStep, completedSteps, onStepClick, theme, onToggleTheme, showStepper }) {
+export default function TopNav({ steps, activeStep, completedSteps, onStepClick, onHome, theme, onToggleTheme, showStepper }) {
   return (
     <nav className="top-nav">
-      <div className="top-nav-brand">
+      <div className="top-nav-brand" onClick={onHome} style={{ cursor: 'pointer' }}>
         <img src="/images/evercam-logo.png" alt="Evercam" style={{ height: 48, objectFit: 'contain' }} />
         <span className="sep" style={{ margin: '0 8px' }}>×</span>
         <img src="/images/navatech-logo.png" alt="Navatech" style={{ height: 40, objectFit: 'contain' }} />

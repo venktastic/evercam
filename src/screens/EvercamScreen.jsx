@@ -57,7 +57,7 @@ export default function EvercamScreen({ onSend }) {
           <div key={i} className={`ec-sidebar-item ${item.active ? 'active' : ''}`}>
             <span className="sidebar-icon">{item.icon}</span>
             <span>{item.label}</span>
-            {item.badge && <span style={{ fontSize: 9, background: 'rgba(74,125,255,0.3)', color: '#7ba4ff', padding: '1px 5px', borderRadius: 4, marginLeft: 'auto' }}>{item.badge}</span>}
+            {item.badge && <span style={{ fontSize: 9, background: 'var(--accent-primary-glow)', color: 'var(--accent-primary)', padding: '1px 5px', borderRadius: 4, marginLeft: 'auto' }}>{item.badge}</span>}
           </div>
         ))}
       </aside>
@@ -66,16 +66,16 @@ export default function EvercamScreen({ onSend }) {
         <div className="ec-breadcrumb">
           <a href="#">Home</a> <span>›</span>
           <a href="#">Barnhill - NC Education Campus</a> <span>›</span>
-          <span style={{ color: 'rgba(255,255,255,0.7)' }}>Smart Search</span>
+          <span style={{ color: 'var(--text-secondary)' }}>Smart Search</span>
         </div>
 
         <div className="ec-header">
           <h1>Smart Search</h1>
           <div className="ec-header-actions">
-            <button className="btn btn-outline" style={{ color: 'rgba(255,255,255,0.7)', borderColor: 'rgba(255,255,255,0.15)' }}>
+            <button className="btn btn-outline" style={{ color: 'var(--text-secondary)', borderColor: 'var(--border-primary)' }}>
               EXPORT AS ↓
             </button>
-            <button className="btn btn-primary" style={{ background: 'var(--evercam-accent)' }}>
+            <button className="btn btn-primary">
               SAVE 💾
             </button>
           </div>
@@ -93,7 +93,7 @@ export default function EvercamScreen({ onSend }) {
           <div className="ec-chain-node">
             <span>🚶</span>
             <span>Worker</span>
-            <span style={{ color: 'rgba(255,255,255,0.3)' }}>✕</span>
+            <span style={{ color: 'var(--text-tertiary)' }}>✕</span>
           </div>
           <span className="ec-chain-arrow">→</span>
           <div className="ec-chain-node">
@@ -122,13 +122,13 @@ export default function EvercamScreen({ onSend }) {
               <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
                 <button 
                   onClick={() => setActiveTab('zone')}
-                  style={{ background: 'none', border: 'none', color: activeTab === 'zone' ? '#fff' : 'rgba(255,255,255,0.4)', fontSize: 15, fontWeight: activeTab === 'zone' ? 600 : 400, borderBottom: activeTab === 'zone' ? '2px solid var(--evercam-accent)' : '2px solid transparent', paddingBottom: 4, cursor: 'pointer' }}
+                  style={{ background: 'none', border: 'none', color: activeTab === 'zone' ? 'var(--text-primary)' : 'var(--text-tertiary)', fontSize: 15, fontWeight: activeTab === 'zone' ? 600 : 400, borderBottom: activeTab === 'zone' ? '2px solid var(--accent-primary)' : '2px solid transparent', paddingBottom: 4, cursor: 'pointer' }}
                 >
                   Restricted Work Zone
                 </button>
                 <button 
                   onClick={() => setActiveTab('ppe')}
-                  style={{ background: 'none', border: 'none', color: activeTab === 'ppe' ? '#fff' : 'rgba(255,255,255,0.4)', fontSize: 15, fontWeight: activeTab === 'ppe' ? 600 : 400, borderBottom: activeTab === 'ppe' ? '2px solid var(--evercam-accent)' : '2px solid transparent', paddingBottom: 4, cursor: 'pointer' }}
+                  style={{ background: 'none', border: 'none', color: activeTab === 'ppe' ? 'var(--text-primary)' : 'var(--text-tertiary)', fontSize: 15, fontWeight: activeTab === 'ppe' ? 600 : 400, borderBottom: activeTab === 'ppe' ? '2px solid var(--accent-primary)' : '2px solid transparent', paddingBottom: 4, cursor: 'pointer' }}
                 >
                   Missing PPE
                 </button>
@@ -192,9 +192,9 @@ export default function EvercamScreen({ onSend }) {
         <div className="summary-row"><span className="label">Zone</span><span className="value">{activeTab === 'zone' ? 'Zone 3 - Excavation' : 'Zone 1 - Main Entrance'}</span></div>
         <div className="summary-row"><span className="label">Project</span><span className="value">NC Education Campus</span></div>
 
-        <div style={{ marginTop: 24, padding: 14, background: 'rgba(91,138,255,0.08)', borderRadius: 8, border: '1px solid rgba(91,138,255,0.15)' }}>
-          <div style={{ fontSize: 12, fontWeight: 600, color: '#5b8aff', marginBottom: 6 }}>💡 Integration Status</div>
-          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>
+        <div style={{ marginTop: 24, padding: 14, background: 'var(--accent-primary-glow)', borderRadius: 8, border: '1px solid var(--border-primary)' }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--accent-primary)', marginBottom: 6 }}>💡 Integration Status</div>
+          <div style={{ fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
             Navatech integration is active. Sending a trigger will create a draft safety observation and notify the assigned reviewer via WhatsApp.
           </div>
         </div>
