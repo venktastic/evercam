@@ -1,18 +1,51 @@
 import { useState } from 'react'
 
-export default function NaiScreen({ onSubmit }) {
-  const [form, setForm] = useState({
-    description: 'Barriers missing to excavations in Zone 3',
+const FORM_DEFAULTS = {
+  zone: {
+    description: 'Worker in restricted area in Zone 3',
     project: 'NC Education Campus',
     location: 'Zone 3',
     eventType: 'Observation',
-    hazardType: 'Barriers / Guards',
+    hazardType: 'Security and Site Access',
+    reporter: 'Prakash Senghani',
+    geolocation: 'Zone 3 - Excavation Area',
+    aiDescription: 'Worker is in a restricted area, posing safety risks.',
+    bannerTitle: 'DEMOBS101: Site Access and Security',
+    bannerSub: 'Worker in restricted area in Zone 3',
+    img1: '/images/detection1.png',
+    img2: '/images/detection2.png',
+  },
+  ppe: {
+    description: 'Missing Hard Hat/Vest at Zone 1',
+    project: 'NC Education Campus',
+    location: 'Zone 1',
+    eventType: 'Observation',
+    hazardType: 'PPE',
+    reporter: 'Prakash Senghani',
+    geolocation: 'Zone 1 - Main Entrance',
+    aiDescription: 'Worker detected without required PPE (hard hat and high-visibility vest) in active construction zone, posing injury risks.',
+    bannerTitle: 'DEMOBS102: PPE Compliance',
+    bannerSub: 'Missing Hard Hat/Vest at Zone 1',
+    img1: '/images/ppe-missing1.png',
+    img2: '/images/ppe-missing2.png',
+  },
+}
+
+export default function NaiScreen({ scenario = 'zone', onSubmit }) {
+  const defaults = FORM_DEFAULTS[scenario] || FORM_DEFAULTS.zone
+
+  const [form, setForm] = useState({
+    description: defaults.description,
+    project: defaults.project,
+    location: defaults.location,
+    eventType: defaults.eventType,
+    hazardType: defaults.hazardType,
     rootCause: '',
     severity: '',
-    reporter: 'Prakash Senghani',
+    reporter: defaults.reporter,
     reviewer: '',
-    geolocation: 'Zone 3 - Excavation Area',
-    aiDescription: 'Barriers are missing at excavations in Zone 3, posing a safety risk.',
+    geolocation: defaults.geolocation,
+    aiDescription: defaults.aiDescription,
     comments: '',
     corrective: '',
   })
@@ -36,14 +69,14 @@ export default function NaiScreen({ onSubmit }) {
         {/* Top Bar */}
         <div className="nai-top-bar">
           <span className="back">←</span>
-          <span className="title">DEMOBS101</span>
+          <span className="title">{scenario === 'ppe' ? 'DEMOBS102' : 'DEMOBS101'}</span>
           <span style={{ fontSize: 18 }}>🔲</span>
         </div>
 
         {/* Banner */}
         <div className="nai-banner">
-          <div className="nai-banner-title">🔲 DEMOBS101: Breaking Ground and Excavations</div>
-          <div className="nai-banner-sub">Barriers missing to excavations in Zone 3</div>
+          <div className="nai-banner-title">🔲 {defaults.bannerTitle}</div>
+          <div className="nai-banner-sub">{defaults.bannerSub}</div>
           <div className="nai-banner-date">Due Date: 30 Jun 2026</div>
         </div>
 
@@ -68,7 +101,6 @@ export default function NaiScreen({ onSubmit }) {
           <div className="nai-section">
             <div className="nai-section-title">Observation Details</div>
 
-            {/* Prefilled fields */}
             <div className="nai-field">
               <div className="nai-field-label">Observation Details</div>
               <div className="nai-field-value">{form.description}</div>
@@ -94,7 +126,6 @@ export default function NaiScreen({ onSubmit }) {
               <div className="nai-field-value">{form.hazardType}</div>
             </div>
 
-            {/* Incomplete fields */}
             <div className={`nai-field ${!form.rootCause ? 'incomplete' : ''}`}>
               <div className="nai-field-label">Root Cause *</div>
               <select value={form.rootCause} onChange={e => update('rootCause', e.target.value)}
@@ -174,8 +205,8 @@ export default function NaiScreen({ onSubmit }) {
             <div className="nai-field">
               <div className="nai-field-label">Pictures</div>
               <div className="nai-pictures" style={{ marginTop: 6 }}>
-                <img className="nai-pic-thumb" src="/images/detection1.png" alt="Detection 1" />
-                <img className="nai-pic-thumb" src="/images/detection2.png" alt="Detection 2" />
+                <img className="nai-pic-thumb" src={defaults.img1} alt="Detection 1" />
+                <img className="nai-pic-thumb" src={defaults.img2} alt="Detection 2" />
               </div>
             </div>
           </div>

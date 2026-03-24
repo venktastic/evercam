@@ -1,4 +1,45 @@
-export default function WhatsAppScreen({ onOpen }) {
+const SCENARIOS = {
+  zone: {
+    image: '/images/detection1.png',
+    caption: 'Worker in restricted area in Zone 3',
+    time: '11:57 AM',
+    description: 'Worker in restricted area in Zone 3',
+    aiDescription: 'Worker is in a restricted area, posing safety risks.',
+    hazardType: 'Security and Site Access',
+    rootCause: 'Procedures',
+    severity: 'High',
+    reporter: 'Prakash Senghani',
+    location: 'Zone 3',
+    mitigations: [
+      'Ensure clear signage for restricted areas. [hsg150, 58]',
+      'Conduct regular safety briefings on access protocols. [hsg150, 101]',
+    ],
+    imageAnalysisUrl: 'https://navate.ch/QyM2Sr',
+    imageAnalysis: 'The image shows an active construction site with multiple workers and heavy machinery. Safety barriers and warning tape are in place to restrict access to hazardous areas. Workers are wearing appropriate PPE (high-visibility vests and hard hats). The site appears organized, but the presence of heavy machinery and open excavation areas requires ongoing vigilance for safety.',
+  },
+  ppe: {
+    image: '/images/ppe-missing1.png',
+    caption: 'Missing Hard Hat/Vest at Zone 1',
+    time: '2:10 PM',
+    description: 'Missing Hard Hat/Vest at Zone 1',
+    aiDescription: 'Worker detected without required PPE (hard hat and high-visibility vest) in active construction zone, posing injury risks.',
+    hazardType: 'PPE',
+    rootCause: 'Training',
+    severity: 'High',
+    reporter: 'Prakash Senghani',
+    location: 'Zone 1',
+    mitigations: [
+      'Ensure all workers wear appropriate PPE before entering site. [hsg150, 28]',
+      'Conduct toolbox talks on PPE requirements at shift start. [hsg150, 34]',
+    ],
+    imageAnalysisUrl: 'https://navate.ch/Xt7PqW',
+    imageAnalysis: 'The image shows a construction site with a worker carrying materials without wearing a hard hat or high-visibility vest. Other workers in the background are wearing proper PPE. The worker is in an active zone with scaffolding and heavy equipment nearby, creating a significant safety risk.',
+  },
+}
+
+export default function WhatsAppScreen({ scenario = 'zone', onOpen }) {
+  const data = SCENARIOS[scenario] || SCENARIOS.zone
+
   return (
     <div className="wa-layout">
       <div className="wa-phone">
@@ -17,22 +58,25 @@ export default function WhatsAppScreen({ onOpen }) {
           </div>
         </div>
 
-        {/* Companion Bar */}
-        <div style={{ padding: '8px 16px', background: 'rgba(0,0,0,0.3)' }}>
+        {/* Message Body */}
+        <div className="wa-body">
+
+          {/* Image preview */}
+          <div style={{ borderRadius: 8, overflow: 'hidden', maxWidth: '70%', alignSelf: 'flex-end', marginBottom: 2 }}>
+            <img src={data.image} alt="Detection" style={{ width: '100%', height: 120, objectFit: 'cover' }} />
+            <div style={{ background: '#1a2730', padding: '2px 8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: 12, color: '#d1d7db' }}>{data.caption}</span>
+              <span style={{ fontSize: 10, color: '#667781' }}>{data.time}</span>
+            </div>
+          </div>
+
+          {/* Companion Bar */}
           <div className="wa-companion-bar">
             <div className="wa-companion-title">Navatech Group Companion</div>
             <div className="wa-companion-sender">Prax Senghani nAI</div>
             <div className="wa-companion-desc">
-              <span>🟢</span> Barriers missing to excavations in Zone 3
+              <span>📷</span> {data.caption}
             </div>
-          </div>
-        </div>
-
-        {/* Message Body */}
-        <div className="wa-body">
-          {/* Image preview */}
-          <div style={{ borderRadius: 8, overflow: 'hidden', maxWidth: '70%', alignSelf: 'flex-end', marginBottom: 4 }}>
-            <img src="/images/detection1.png" alt="Detection" style={{ width: '100%', height: 120, objectFit: 'cover' }} />
           </div>
 
           {/* AI Message */}
@@ -42,46 +86,46 @@ export default function WhatsAppScreen({ onOpen }) {
               🚨 Safety Observation Report 👷
             </div>
 
-            <div className="wa-field"><span className="emoji">💬</span> <strong>Description:</strong> Barriers missing to excavations in Zone 3</div>
-            <div className="wa-field"><span className="emoji">🤖</span> <strong>AI Generated Description:</strong> Barriers are missing at excavations in Zone 3, posing a safety risk.</div>
+            <div className="wa-field"><span className="emoji">💬</span> <strong>Description:</strong> {data.description}</div>
+            <div className="wa-field"><span className="emoji">🤖</span> <strong>AI Generated Description:</strong> {data.aiDescription}</div>
 
             <div style={{ height: 8 }} />
 
-            <div className="wa-field"><span className="emoji">🔍</span> <strong>Hazard Type:</strong> Barriers / Guards</div>
-            <div className="wa-field"><span className="emoji">🔧</span> <strong>Root Cause:</strong> Procedures</div>
-            <div className="wa-field"><span className="emoji">⚠️</span> <strong>Severity:</strong> High</div>
-            <div className="wa-field"><span className="emoji">📋</span> <strong>Reported By:</strong> Prakash Senghani</div>
-            <div className="wa-field"><span className="emoji">📍</span> <strong>Location:</strong> Zone 3</div>
-            <div className="wa-field"><span className="emoji">🏗️</span> <strong>Project:</strong> NC Education Campus</div>
-            <div className="wa-field"><span className="emoji">📹</span> <strong>Source:</strong> Evercam Automation</div>
-            <div className="wa-field"><span className="emoji">🕐</span> <strong>Detection:</strong> 02 Mar 2026, 15:21:50</div>
+            <div className="wa-field"><span className="emoji">🔍</span> <strong>Hazard Type:</strong> {data.hazardType}</div>
+            <div className="wa-field"><span className="emoji">🔧</span> <strong>Root Cause:</strong> {data.rootCause}</div>
+            <div className="wa-field"><span className="emoji">⚠️</span> <strong>Severity:</strong> {data.severity}</div>
+            <div className="wa-field"><span className="emoji">📋</span> <strong>Reported By:</strong> {data.reporter}</div>
+            <div className="wa-field"><span className="emoji">📍</span> <strong>Location:</strong> {data.location}</div>
 
             <div style={{ height: 10 }} />
 
             <div className="wa-field"><span className="emoji">🔒</span> <strong>Suggested Mitigation Actions from HSG150:</strong></div>
             <ul style={{ paddingLeft: 28, margin: '4px 0', fontSize: 13, color: '#d1d7db', lineHeight: 1.7 }}>
-              <li>Guard edges of excavations with substantial barriers. [hsg150, 72]</li>
-              <li>Prevent vehicles from approaching excavation edges. [hsg150, 73]</li>
+              {data.mitigations.map((m, i) => <li key={i}>{m}</li>)}
             </ul>
 
             <div style={{ height: 8 }} />
-            <div className="wa-field" style={{ fontWeight: 600 }}>
-              <span className="emoji">🖼️</span> <strong>Image Analysis</strong>
+            <div className="wa-field" style={{ fontWeight: 600 }}>Image Analysis</div>
+            <div style={{ fontSize: 12, marginTop: 4 }}>
+              <span className="emoji">🖼️</span>{' '}
+              <a href={data.imageAnalysisUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#53bdeb', textDecoration: 'underline' }}>
+                {data.imageAnalysisUrl}
+              </a>
             </div>
             <div style={{ fontSize: 12, color: '#8696a0', lineHeight: 1.6, marginTop: 4 }}>
-              🔍 The image shows a construction site with a large, deep excavation. There are exposed pipes and construction materials scattered around. No workers are visible. The excavation is only partially marked with barriers, creating a safety hazard.
+              🔍 {data.imageAnalysis}
             </div>
 
-            <div style={{ fontSize: 10, color: '#667781', textAlign: 'right', marginTop: 8 }}>15:22</div>
+            <div style={{ height: 10 }} />
+            <div style={{ fontSize: 11, color: '#fbbf24', fontStyle: 'italic', lineHeight: 1.5 }}>
+              ✨ This message was automatically generated by Navatech AI. Please review and act accordingly.
+            </div>
+
+            <div style={{ fontSize: 10, color: '#667781', textAlign: 'right', marginTop: 8 }}>{data.time}</div>
           </div>
 
-          {/* Draft Status + Actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', padding: '4px 0' }}>
-            <span className="wa-draft-chip">⚠ Draft</span>
-            <span style={{ fontSize: 11, color: '#8696a0' }}>This safety event requires completion in the nAI App.</span>
-          </div>
-
-          <button className="btn btn-primary" onClick={onOpen} style={{ alignSelf: 'center', padding: '12px 28px', borderRadius: 12, fontSize: 14 }}>
+          {/* Action Button */}
+          <button className="btn btn-primary" onClick={onOpen} style={{ alignSelf: 'center', padding: '12px 28px', borderRadius: 12, fontSize: 14, marginTop: 8 }}>
             📱 Open in nAI App
           </button>
         </div>

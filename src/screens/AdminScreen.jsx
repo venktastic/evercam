@@ -9,8 +9,25 @@ const SIDEBAR = [
   { icon: '🤖', label: 'AI Insights' },
 ]
 
-const OBSERVATIONS = [
-  { id: 'OBS-2026-001', project: 'NC Education Campus', location: 'Zone 3', hazard: 'Barriers / Guards', severity: 'High', rootCause: 'Procedures', reporter: 'Prakash Senghani', reviewer: 'Rushi Patel', source: 'Evercam', status: 'Under Review', created: '02 Mar 2026, 15:22', highlight: true },
+const OBS_ZONE = {
+  id: 'OBS-2026-001', project: 'NC Education Campus', location: 'Zone 3',
+  hazard: 'Security and Site Access', severity: 'High', rootCause: 'Procedures',
+  reporter: 'Prakash Senghani', reviewer: 'Rushi Patel', source: 'Evercam',
+  status: 'Under Review', created: '02 Mar 2026, 11:57', highlight: true,
+  aiDesc: 'Worker is in a restricted area, posing safety risks.',
+  rule: 'Worker in restricted area', img: '/images/detection1.png',
+}
+
+const OBS_PPE = {
+  id: 'OBS-2026-001', project: 'NC Education Campus', location: 'Zone 1',
+  hazard: 'PPE', severity: 'High', rootCause: 'Training',
+  reporter: 'Prakash Senghani', reviewer: 'Rushi Patel', source: 'Evercam',
+  status: 'Under Review', created: '02 Mar 2026, 14:10', highlight: true,
+  aiDesc: 'Worker detected without required PPE (hard hat and high-visibility vest) in active construction zone, posing injury risks.',
+  rule: 'Missing PPE Compliance', img: '/images/ppe-missing1.png',
+}
+
+const OTHER_OBS = [
   { id: 'OBS-2026-002', project: 'NC Education Campus', location: 'Zone 1', hazard: 'Fall Protection', severity: 'Medium', rootCause: 'Training', reporter: 'James Wilson', reviewer: 'Sarah OConnor', source: 'Manual', status: 'Open', created: '01 Mar 2026, 11:45', highlight: false },
   { id: 'OBS-2026-003', project: 'Marina Bay Phase 2', location: 'Block B', hazard: 'Electrical', severity: 'High', rootCause: 'Equipment', reporter: 'Mike Chen', reviewer: 'Rushi Patel', source: 'Inspection', status: 'Closed', created: '28 Feb 2026, 09:30', highlight: false },
   { id: 'OBS-2026-004', project: 'NC Education Campus', location: 'Zone 5', hazard: 'Housekeeping', severity: 'Low', rootCause: 'Procedures', reporter: 'Sarah OConnor', reviewer: 'James Wilson', source: 'Manual', status: 'Open', created: '27 Feb 2026, 14:15', highlight: false },
@@ -19,9 +36,12 @@ const OBSERVATIONS = [
 
 const FILTERS = ['All Status', 'Source: Evercam', 'Project: NC Education', 'Severity: High', 'Date Range']
 
-export default function AdminScreen() {
+export default function AdminScreen({ scenario = 'zone' }) {
   const [selectedRow, setSelectedRow] = useState(null)
   const [activeFilter, setActiveFilter] = useState('All Status')
+
+  const primaryObs = scenario === 'ppe' ? OBS_PPE : OBS_ZONE
+  const OBSERVATIONS = [primaryObs, ...OTHER_OBS]
 
   return (
     <div className="admin-layout">
@@ -121,22 +141,22 @@ export default function AdminScreen() {
           {/* Captured Image */}
           <div className="drawer-section">
             <div className="drawer-section-title">📸 Captured Image</div>
-            <img src="/images/detection1.png" alt="Detection" style={{ width: '100%', borderRadius: 8, marginBottom: 8 }} />
+            <img src={selectedRow.img || '/images/detection1.png'} alt="Detection" style={{ width: '100%', borderRadius: 8, marginBottom: 8 }} />
           </div>
 
           {/* Details */}
           <div className="drawer-section">
             <div className="drawer-section-title">📋 Observation Details</div>
-            <div className="drawer-field"><span className="label">AI Description</span><span className="value" style={{ maxWidth: '60%', textAlign: 'right' }}>Barriers are missing at excavations in Zone 3</span></div>
-            <div className="drawer-field"><span className="label">Detection Time</span><span className="value">02 Mar 2026, 15:21:50</span></div>
-            <div className="drawer-field"><span className="label">Camera</span><span className="value">NC Ed - North Facing</span></div>
-            <div className="drawer-field"><span className="label">Automation Rule</span><span className="value">Worker in restricted zone</span></div>
-            <div className="drawer-field"><span className="label">Geofence</span><span className="value">Zone 3 - Excavation</span></div>
-            <div className="drawer-field"><span className="label">Hazard Type</span><span className="value">Barriers / Guards</span></div>
-            <div className="drawer-field"><span className="label">Severity</span><span className="value"><span className="chip chip-high">High</span></span></div>
-            <div className="drawer-field"><span className="label">Root Cause</span><span className="value">Procedures</span></div>
-            <div className="drawer-field"><span className="label">Reporter</span><span className="value">Prakash Senghani</span></div>
-            <div className="drawer-field"><span className="label">Reviewer</span><span className="value">Rushi Patel</span></div>
+            <div className="drawer-field"><span className="label">AI Description</span><span className="value" style={{ maxWidth: '60%', textAlign: 'right' }}>{selectedRow.aiDesc}</span></div>
+            <div className="drawer-field"><span className="label">Detection Time</span><span className="value">{selectedRow.created}</span></div>
+            <div className="drawer-field"><span className="label">Camera</span><span className="value">{scenario === 'ppe' ? 'NC Ed - East Gate' : 'NC Ed - North Facing'}</span></div>
+            <div className="drawer-field"><span className="label">Automation Rule</span><span className="value">{selectedRow.rule}</span></div>
+            <div className="drawer-field"><span className="label">Geofence</span><span className="value">{selectedRow.location} - {scenario === 'ppe' ? 'Main Entrance' : 'Excavation'}</span></div>
+            <div className="drawer-field"><span className="label">Hazard Type</span><span className="value">{selectedRow.hazard}</span></div>
+            <div className="drawer-field"><span className="label">Severity</span><span className="value"><span className={`chip ${selectedRow.severity === 'High' ? 'chip-high' : selectedRow.severity === 'Medium' ? 'chip-draft' : 'chip-ready'}`}>{selectedRow.severity}</span></span></div>
+            <div className="drawer-field"><span className="label">Root Cause</span><span className="value">{selectedRow.rootCause}</span></div>
+            <div className="drawer-field"><span className="label">Reporter</span><span className="value">{selectedRow.reporter}</span></div>
+            <div className="drawer-field"><span className="label">Reviewer</span><span className="value">{selectedRow.reviewer}</span></div>
           </div>
 
           {/* Audit Trail */}
@@ -145,23 +165,23 @@ export default function AdminScreen() {
             <div className="audit-trail">
               <div className="audit-step completed">
                 <div className="audit-title">📹 Detected in Evercam</div>
-                <div className="audit-time">02 Mar 2026, 15:21:50</div>
+                <div className="audit-time">{selectedRow.created}</div>
               </div>
               <div className="audit-step completed">
                 <div className="audit-title">🚀 Sent to Navatech</div>
-                <div className="audit-time">02 Mar 2026, 15:22:01</div>
+                <div className="audit-time">{selectedRow.created}</div>
               </div>
               <div className="audit-step completed">
                 <div className="audit-title">💬 Reviewed in WhatsApp</div>
-                <div className="audit-time">02 Mar 2026, 15:22:15</div>
+                <div className="audit-time">{selectedRow.created}</div>
               </div>
               <div className="audit-step completed">
                 <div className="audit-title">📱 Completed in nAI App</div>
-                <div className="audit-time">02 Mar 2026, 15:25:00</div>
+                <div className="audit-time">{selectedRow.created}</div>
               </div>
               <div className="audit-step">
                 <div className="audit-title">🏢 Logged in Portal</div>
-                <div className="audit-time">02 Mar 2026, 15:25:01</div>
+                <div className="audit-time">{selectedRow.created}</div>
               </div>
             </div>
           </div>

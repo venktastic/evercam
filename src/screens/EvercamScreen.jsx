@@ -28,10 +28,10 @@ const TRIGGERS_ZONE = [
 ]
 
 const TRIGGERS_PPE = [
-  { id: 5, camera: 'NC Ed - East Gate', label: 'Missing Hard Hat/Vest', timestamp: '02 Mar, 2026 14:10:05', confidence: 95, zone: 'Zone 1 - Main Entrance', img: '/images/detection2.png', status: 'ready' },
-  { id: 6, camera: 'NC Ed - East Gate', label: 'Missing Hard Hat', timestamp: '02 Mar, 2026 14:12:30', confidence: 89, zone: 'Zone 1 - Main Entrance', img: '/images/detection1.png', status: 'ready' },
-  { id: 7, camera: 'NC Ed - West Gate', label: 'Missing Hi-Vis Vest', timestamp: '02 Mar, 2026 13:45:20', confidence: 92, zone: 'Zone 2 - Unloading', img: '/images/detection3.png', status: 'ready' },
-  { id: 8, camera: 'NC Ed - West Gate', label: 'Missing Hard Hat', timestamp: '02 Mar, 2026 13:50:11', confidence: 87, zone: 'Zone 2 - Unloading', img: '/images/detection2.png', status: 'ready' },
+  { id: 5, camera: 'NC Ed - East Gate', label: 'Missing Hard Hat/Vest', timestamp: '02 Mar, 2026 14:10:05', confidence: 95, zone: 'Zone 1 - Main Entrance', img: '/images/ppe-missing1.png', status: 'ready' },
+  { id: 6, camera: 'NC Ed - East Gate', label: 'Missing Hard Hat', timestamp: '02 Mar, 2026 14:12:30', confidence: 89, zone: 'Zone 1 - Main Entrance', img: '/images/ppe-missing2.png', status: 'ready' },
+  { id: 7, camera: 'NC Ed - West Gate', label: 'Missing Hi-Vis Vest', timestamp: '02 Mar, 2026 13:45:20', confidence: 92, zone: 'Zone 2 - Unloading', img: '/images/ppe-missing3.png', status: 'ready' },
+  { id: 8, camera: 'NC Ed - West Gate', label: 'Missing Hard Hat', timestamp: '02 Mar, 2026 13:50:11', confidence: 87, zone: 'Zone 2 - Unloading', img: '/images/ppe-missing1.png', status: 'ready' },
 ]
 
 export default function EvercamScreen({ onSend }) {
@@ -46,7 +46,7 @@ export default function EvercamScreen({ onSend }) {
     setTimeout(() => {
       setSendingId(null)
       setSentIds(prev => [...prev, id])
-      onSend()
+      onSend(activeTab)
     }, 1200)
   }
 
@@ -84,7 +84,7 @@ export default function EvercamScreen({ onSend }) {
         {/* Automation Chain */}
         <div className="ec-chain">
           <div className="ec-chain-node">
-            <img src={activeTab === 'zone' ? '/images/detection1.png' : '/images/detection2.png'} alt="Camera" />
+            <img src={activeTab === 'zone' ? '/images/detection1.png' : '/images/ppe-missing1.png'} alt="Camera" />
             <div>
               <div style={{ fontWeight: 600, fontSize: 11 }}>🟢 {activeTab === 'zone' ? 'NC Ed - North Facing' : 'NC Ed - East Gate'}</div>
             </div>

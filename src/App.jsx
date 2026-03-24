@@ -20,6 +20,7 @@ export default function App() {
   const [activeStep, setActiveStep] = useState('hero')
   const [completedSteps, setCompletedSteps] = useState([])
   const [toasts, setToasts] = useState([])
+  const [scenario, setScenario] = useState('zone')
 
   const toggleTheme = useCallback(() => {
     setTheme(t => t === 'dark' ? 'light' : 'dark')
@@ -42,18 +43,23 @@ export default function App() {
     setTimeout(() => goToStep(nextStep), 800)
   }, [addToast, goToStep])
 
+  const handleEvercamSend = useCallback((tab) => {
+    setScenario(tab)
+    completeAndAdvance('evercam', 'whatsapp', 'Safety event sent to Navatech')
+  }, [completeAndAdvance])
+
   const renderScreen = () => {
     switch (activeStep) {
       case 'hero':
         return <HeroSection onStart={() => goToStep('evercam')} />
       case 'evercam':
-        return <EvercamScreen onSend={() => completeAndAdvance('evercam', 'whatsapp', '✅ Safety event sent to Navatech')} />
+        return <EvercamScreen onSend={handleEvercamSend} />
       case 'whatsapp':
-        return <WhatsAppScreen onOpen={() => completeAndAdvance('whatsapp', 'nai', '📱 Opening in nAI App...')} />
+        return <WhatsAppScreen scenario={scenario} onOpen={() => completeAndAdvance('whatsapp', 'nai', 'Opening in nAI App...')} />
       case 'nai':
-        return <NaiScreen onSubmit={() => completeAndAdvance('nai', 'admin', '✅ Observation successfully submitted to Navatech Portal')} />
+        return <NaiScreen scenario={scenario} onSubmit={() => completeAndAdvance('nai', 'admin', 'Observation successfully submitted to Navatech Portal')} />
       case 'admin':
-        return <AdminScreen />
+        return <AdminScreen scenario={scenario} />
       default:
         return <HeroSection onStart={() => goToStep('evercam')} />
     }
